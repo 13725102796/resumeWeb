@@ -18,21 +18,25 @@
 <div class="container" id="box">
   <hr>
   <table class="table table-bordered table-hover">
-    <caption class="h2 text-info">信息表</caption>
+    <caption class="h2 text-info">工作经历表</caption>
     <tr class="text-danger">
       <th class="text-center">序号</th>
-      <th class="text-center">主题</th>
-      <th class="text-center">介绍</th>
+      <th class="text-center">年份</th>
+      <th class="text-center">标题</th>
+      <th class="text-center">工作经验</th>
+      <th class="text-center">图标</th>
       <th class="text-center">操作</th>
     </tr>
-    <% for(var i=0;i<aboutData.length;i++) { %>
+    <% for(var i=0;i<experienceData.length;i++) { %>
     <tr class="text-center">
       <td><%= i+1 %></td>
-      <td><%= aboutData[i].title %></td>
-      <td><%= aboutData[i].content %></td>
+      <td><%= experienceData[i].worktime %></td>
+      <td><%= experienceData[i].title %></td>
+      <td><%= experienceData[i].content %></td>
+      <td><%= experienceData[i].icon_color %></td>
       <td>
-        <button class="btn btn-info btn-sm modClass" data-toggle="modal" data-target="#layer2" style="margin-bottom:20%; " mod_id="<%= aboutData[i].ID %>">修改</button>
-        <button class="btn btn-danger btn-sm delClass" data-toggle="modal" data-target="#layer" del_id="<%= aboutData[i].ID %>">删除</button>
+        <button class="btn btn-info btn-sm modClass" data-toggle="modal" data-target="#layer2" style="margin-bottom:20%; " mod_id="<%= experienceData[i].ID %>">修改</button>
+        <button class="btn btn-danger btn-sm delClass" data-toggle="modal" data-target="#layer" del_id="<%= experienceData[i].ID %>">删除</button>
       </td>
     </tr>
     <% } %>
@@ -40,12 +44,18 @@
       $().ready(function () {
         $('.modClass').on('click', function(){
           var mod = $(this).parent().prev();
+          var modTime = mod.prev().prev().prev().text();
+          var modTitle = mod.prev().prev().text();
+          var modIntro = mod.prev().text();
+          var modIcon = mod.text();
+
           var modId = $(this).attr('mod_id');
-          var modTitle = mod.prev().text();
-          var modIntro = mod.text();
           $("#mod_id").val(modId);
+
+          $("#mod_time").val(modTime);
           $("#mod_title").val(modTitle);
           $("#mod_intro").val(modIntro);
+          $("#mod_icon").val(modIcon);
         });
 
         $('.delClass').on('click', function(){
@@ -57,16 +67,16 @@
         });
       });
     </script>
-    <% if (aboutData.length!=0) { %>
+    <% if (experienceData.length!=0) { %>
     <tr>
-      <td colspan="4" class="text-right">
+      <td colspan="6" class="text-right">
         <button class="btn btn-warning btn-sm addClass" data-toggle="modal" data-target="#layer1">添加</button>
         <button class="btn btn-danger btn-sm delAllClass" data-toggle="modal" data-target="#layer">删除全部</button>
       </td>
     </tr>
     <% }else { %>
     <tr>
-      <td colspan="4" class="text-center text-muted">
+      <td colspan="6" class="text-center text-muted">
         <p>Not has databases....... </p>
         <button class="btn btn-warning btn-sm addClass" data-toggle="modal" data-target="#layer1">添加</button>
       </td>
@@ -100,18 +110,26 @@
           <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
           </button>
-          <h4 class="modal-title">请添加填写信息</h4>
+          <h4 class="modal-title text-info">请添加填写信息</h4>
         </div>
         <div class="modal-body">
           <form role="form" action="?" method="post">
-            <div class="form-group">
-              <label for="username">主题：</label>
-              <input type="text" name="title" class="form-control" placeholder="input title">
-            </div>
-            <div class="form-group">
-              <label for="password">介绍：</label>
-              <input type="text" name="introduction" class="form-control" placeholder="input content">
-            </div>
+              <div class="form-group">
+                <label for="username">年份：</label>
+                <input type="text" class="form-control" name="time">
+              </div>
+              <div class="form-group">
+                <label for="username">标题：</label>
+                <input type="text" class="form-control" name="title">
+              </div>
+              <div class="form-group">
+                <label for="password">工作经历：</label>
+                <textarea type="text" class="form-control" style="height:8em;overflow-x:visible;" name="introduction"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="username">图标：</label>
+                <input type="text" class="form-control" name="icon">
+              </div>
             <div class="form-group">
               <input type="submit" value="添加" class="btn btn-warning">
               <input type="reset" value="重置" class="btn btn-danger">
@@ -129,18 +147,26 @@
           <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
           </button>
-          <h4 class="modal-title">请修改当前信息</h4>
+          <h4 class="modal-title text-info">请修改当前信息</h4>
         </div>
         <div class="modal-body">
           <form role="form" action="?" method="post">
             <input id="mod_id" type="hidden" name="mod_id" />
             <div class="form-group">
-              <label for="username">主题：</label>
+              <label for="username">年份：</label>
+              <input type="text" id="mod_time" class="form-control" name="time">
+            </div>
+            <div class="form-group">
+              <label for="username">标题：</label>
               <input type="text" id="mod_title" class="form-control" name="title">
             </div>
             <div class="form-group">
-              <label for="password">介绍：</label>
-              <textarea type="text" id="mod_intro" class="form-control" style="height:15em;overflow-x:visible;" name="introduction"></textarea>
+              <label for="password">工作经历：</label>
+              <textarea type="text" id="mod_intro" class="form-control" style="height:8em;overflow-x:visible;" name="introduction"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="username">图标：</label>
+              <input type="text" id="mod_icon" class="form-control" name="icon">
             </div>
             <div class="form-group">
               <input type="submit" value="修改" class="btn btn-warning">
