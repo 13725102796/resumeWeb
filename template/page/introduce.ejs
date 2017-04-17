@@ -12,105 +12,146 @@
   <link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
   <script src="/js/jquery.min.js"></script>
   <script src="/js/bootstrap.js"></script>
-  <script type="text/javascript" src="/js/vue.js"></script>
-  <script>
-    var myData = [{"id":1,"username": "blue", "password":"123456"},{"id":2, "username": "小明", "password":"456789"}];
-    window.onload = function () {
-      new Vue ({
-        el:'#box',
-        data:{
-          myData: myData,
-          username: '',
-          password: '',
-          nowId:''
-        },
-        methods:{
-          add:function () {
-            this.myData.push({
-              id: this.myData.length+1,
-              username: this.username,
-              password: this.password
-            })
-            this.username = '';
-            this.password = '';
-          },
-          del:function (n) {
-            if(n!=-3){
-              this.myData.splice(n, 1);
-            }else{
-              this.myData=[]
-            }
-          }
-        }
-      })
-    }
-  </script>
 </head>
 
 <body>
 <div class="container" id="box">
-  <form role="form">
-    <div class="form-group">
-      <label for="username">主题：</label>
-      <input type="text" id="username" class="form-control" placeholder="input title" v-model="username">
-    </div>
-    <div class="form-group">
-      <label for="password">介绍：</label>
-      <input type="text" id="password" class="form-control" placeholder="input content" v-model="password">
-    </div>
-    <div class="form-group">
-      <input type="button" value="添加" class="btn btn-primary" v-on:click=add()>
-      <input type="reset" value="重置" class="btn btn-danger">
-    </div>
-  </form>
   <hr>
   <table class="table table-bordered table-hover">
-    <caption class="h2 text-info">用户信息表</caption>
+    <caption class="h2 text-info">信息表</caption>
     <tr class="text-danger">
       <th class="text-center">序号</th>
-      <th class="text-center">名字</th>
-      <th class="text-center">密码</th>
+      <th class="text-center">工作时间</th>
+      <th class="text-center">标题</th>
+      <th class="text-center">工作内容</th>
       <th class="text-center">操作</th>
     </tr>
-    <tr class="text-center" v-for="value in myData">
-      <td>{{value.id}}</td>
-      <td>{{value.username}}</td>
-      <td>{{value.password}}</td>
+    <% for(var i=0;i<experienceData.length;i++) { %>
+    <tr class="text-center">
+      <td><%= i+1 %></td>
+      <td><%= experienceData[i].title %></td>
+      <td><%= experienceData[i].title %></td>
+      <td><%= experienceData[i].content %></td>
       <td>
-        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#layer" v-on:click="nowId=value.id">删除</button>
+        <button class="btn btn-info btn-sm modClass" data-toggle="modal" data-target="#layer2" style="margin-bottom:20%; " mod_id="<%= experienceData[i].ID %>">修改</button>
+        <button class="btn btn-danger btn-sm delClass" data-toggle="modal" data-target="#layer" del_id="<%= experienceData[i].ID %>">删除</button>
       </td>
     </tr>
+    <% } %>
+   <script>
+     $().ready(function () {
+       $('.modClass').on('click', function(){
+         var mod = $(this).parent().prev();
+         var modId = $(this).attr('mod_id');
+         var modTitle = mod.prev().text();
+         var modIntro = mod.text();
+         $("#mod_id").val(modId);
+         $("#mod_title").val(modTitle);
+         $("#mod_intro").val(modIntro);
+       });
+
+       $('.delClass').on('click', function(){
+         var delId = $(this).attr('del_id');
+         $("#delData").attr('href', '?id=' + delId);
+       });
+       $('.delAllClass').on('click', function(){
+         $("#delData").attr('href', '?id=all');
+       });
+     });
+   </script>
+    <% if (experienceData.length!=0) { %>
     <tr>
-      <td colspan="4" class="text-right" v-show="myData.length!=0">
-        <button class="btn btn-danger btn-sm" v-on:click="nowId=-2" data-toggle="modal" data-target="#layer">删除全部</button>
+      <td colspan="4" class="text-right">
+        <button class="btn btn-warning btn-sm addClass" data-toggle="modal" data-target="#layer1">添加</button>
+        <button class="btn btn-danger btn-sm delAllClass" data-toggle="modal" data-target="#layer">删除全部</button>
       </td>
     </tr>
-    <tr v-show="myData.length==0">
+    <% }else { %>
+    <tr>
       <td colspan="4" class="text-center text-muted">
         <p>Not has databases....... </p>
       </td>
     </tr>
-
+    <% } %>
   </table>
 
-  <!--模态框（alert框） -->
-  <div role="dialog" class="modal fade" id="layer" :data-index="nowId">
+  <!--模态框（alert删除框） -->
+  <div role="dialog" class="modal fade" id="layer">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
           </button>
-          <h4 class="modal-title">confirm delete?</h4>
+          <h4 class="modal-title">确认删除么?</h4>
         </div>
         <div class="modal-body text-right">
-          <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click=del(nowId-1)>YES!</button>
+          <a id="delData"><button class="btn btn-danger btn-sm">YES!</button></a>
           <button class="btn btn-primary btn-sm" data-dismiss="modal">NO!</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!--模态框（alert添加框） -->
+  <div role="dialog" class="modal fade" id="layer1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <h4 class="modal-title">请添加填写信息</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" action="?" method="post">
+            <div class="form-group">
+              <label for="username">主题：</label>
+              <input type="text" name="title" class="form-control" placeholder="input title">
+            </div>
+            <div class="form-group">
+              <label for="password">介绍：</label>
+              <input type="text" name="introduction" class="form-control" placeholder="input content">
+            </div>
+            <div class="form-group">
+              <input type="submit" value="添加" class="btn btn-warning">
+              <input type="reset" value="重置" class="btn btn-danger">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--模态框（alert修改框） -->
+  <div role="dialog" class="modal fade" id="layer2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <h4 class="modal-title">请修改当前信息</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" action="?" method="post">
+            <input id="mod_id" type="hidden" name="mod_id" />
+            <div class="form-group">
+              <label for="username">主题：</label>
+              <input type="text" id="mod_title" class="form-control" name="title">
+            </div>
+            <div class="form-group">
+              <label for="password">介绍：</label>
+              <textarea type="text" id="mod_intro" class="form-control" style="height:15em;overflow-x:visible;" name="introduction"></textarea>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="修改" class="btn btn-warning">
+              <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 </html>
