@@ -21,20 +21,18 @@
     <caption class="h2 text-info">信息表</caption>
     <tr class="text-danger">
       <th class="text-center">序号</th>
-      <th class="text-center">工作时间</th>
-      <th class="text-center">标题</th>
-      <th class="text-center">工作内容</th>
+      <th class="text-center">主题</th>
+      <th class="text-center">介绍</th>
       <th class="text-center">操作</th>
     </tr>
-    <% for(var i=0;i<experienceData.length;i++) { %>
+    <% for(var i=0;i<aboutData.length;i++) { %>
     <tr class="text-center">
       <td><%= i+1 %></td>
-      <td><%= experienceData[i].title %></td>
-      <td><%= experienceData[i].title %></td>
-      <td><%= experienceData[i].content %></td>
+      <td><%= aboutData[i].title %></td>
+      <td><%= aboutData[i].content %></td>
       <td>
-        <button class="btn btn-info btn-sm modClass" data-toggle="modal" data-target="#layer2" style="margin-bottom:20%; " mod_id="<%= experienceData[i].ID %>">修改</button>
-        <button class="btn btn-danger btn-sm delClass" data-toggle="modal" data-target="#layer" del_id="<%= experienceData[i].ID %>">删除</button>
+        <button class="btn btn-info btn-sm modClass" data-toggle="modal" data-target="#layer2" style="margin-bottom:20%; " mod_id="<%= aboutData[i].ID %>">修改</button>
+        <button class="btn btn-danger btn-sm delClass" data-toggle="modal" data-target="#layer" del_id="<%= aboutData[i].ID %>">删除</button>
       </td>
     </tr>
     <% } %>
@@ -59,7 +57,7 @@
        });
      });
    </script>
-    <% if (experienceData.length!=0) { %>
+    <% if (aboutData.length!=0) { %>
     <tr>
       <td colspan="4" class="text-right">
         <button class="btn btn-warning btn-sm addClass" data-toggle="modal" data-target="#layer1">添加</button>
@@ -101,7 +99,7 @@
           <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
           </button>
-          <h4 class="modal-title">请添加填写信息</h4>
+          <h4 class="modal-title text-info">请添加填写信息</h4>
         </div>
         <div class="modal-body">
           <form role="form" action="?" method="post">
@@ -130,7 +128,7 @@
           <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
           </button>
-          <h4 class="modal-title">请修改当前信息</h4>
+          <h4 class="modal-title text-info">请修改当前信息</h4>
         </div>
         <div class="modal-body">
           <form role="form" action="?" method="post">

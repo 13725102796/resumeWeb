@@ -8,11 +8,199 @@
   <meta name="description" content="scclui为轻量级的网站后台管理系统模版。">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <title>首页</title>
-
+  <title>my introduce</title>
+  <link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
 </head>
 
 <body>
-My blog
+<div class="container" id="box">
+  <hr>
+  <table class="table table-bordered table-hover">
+    <caption class="h2 text-info">博客介绍表</caption>
+    <tr class="text-danger">
+      <th class="text-center">序号</th>
+      <th class="text-center">标题</th>
+      <th class="text-center">blog 介绍</th>
+      <th class="text-center">image 图片</th>
+      <th class="text-center">点赞数量</th>
+      <th class="text-center">标签</th>
+      <th class="text-center">链接</th>
+      <th class="text-center">操作</th>
+    </tr>
+    <% for(var i=0;i<experienceData.length;i++) { %>
+    <tr class="text-center">
+      <td><%= i+1 %></td>
+      <td><%= experienceData[i].title %></td>
+      <td><%= experienceData[i].content %></td>
+      <td><%= experienceData[i].pic_src %></td>
+      <td><%= experienceData[i].n_like %></td>
+      <td><%= experienceData[i].tag %></td>
+      <td><%= experienceData[i].href %></td>
+      <td>
+        <button class="btn btn-info btn-sm modClass" data-toggle="modal" data-target="#layer2" style="margin-bottom:20%; " mod_id="<%= experienceData[i].ID %>">修改</button>
+        <button class="btn btn-danger btn-sm delClass" data-toggle="modal" data-target="#layer" del_id="<%= experienceData[i].ID %>">删除</button>
+      </td>
+    </tr>
+    <% } %>
+    <script>
+      $().ready(function () {
+        $('.modClass').on('click', function(){
+          var mod = $(this).parent().prev();
+          var modTitle = mod.prev().prev().prev().prev().prev().text();
+          var modContent = mod.prev().prev().prev().prev().text();
+          var modPic_src = mod.prev().prev().prev().text();
+          var modN_like = mod.prev().prev().text();
+          var modTag = mod.prev().text();
+          var modHref = mod.text();
+
+          var modId = $(this).attr('mod_id');
+          $("#mod_id").val(modId);
+
+          $("#mod_title").val(modTitle);
+          $("#mod_intro").val(modContent);
+          $("#mod_pic_src").val(modPic_src);
+          $("#mod_n_like").val(modN_like);
+          $("#mod_tag").val(modTag);
+          $("#mod_href").val(modHref);
+        });
+
+        $('.delClass').on('click', function(){
+          var delId = $(this).attr('del_id');
+          $("#delData").attr('href', '?id=' + delId);
+        });
+        $('.delAllClass').on('click', function(){
+          $("#delData").attr('href', '?id=all');
+        });
+      });
+    </script>
+    <% if (experienceData.length!=0) { %>
+    <tr>
+      <td colspan="8" class="text-right">
+        <button class="btn btn-warning btn-sm addClass" data-toggle="modal" data-target="#layer1">添加</button>
+        <button class="btn btn-danger btn-sm delAllClass" data-toggle="modal" data-target="#layer">删除全部</button>
+      </td>
+    </tr>
+    <% }else { %>
+    <tr>
+      <td colspan="8" class="text-center text-muted">
+        <p>Not has databases....... </p>
+        <button class="btn btn-warning btn-sm addClass" data-toggle="modal" data-target="#layer1">添加</button>
+      </td>
+    </tr>
+    <% } %>
+  </table>
+
+  <!--模态框（alert删除框） -->
+  <div role="dialog" class="modal fade" id="layer">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <h4 class="modal-title">确认删除么?</h4>
+        </div>
+        <div class="modal-body text-right">
+          <a id="delData"><button class="btn btn-danger btn-sm">YES!</button></a>
+          <button class="btn btn-primary btn-sm" data-dismiss="modal">NO!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--模态框（alert添加框） -->
+  <div role="dialog" class="modal fade" id="layer1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <h4 class="modal-title text-info">请添加填写信息</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" action="?" method="post">
+            <div class="form-group">
+              <label for="username">标题：</label>
+              <input type="text" class="form-control" name="title" placeholder="Title">
+            </div>
+            <div class="form-group">
+              <label for="password">博客介绍：</label>
+              <textarea type="text" class="form-control" style="height:8em;overflow-x:visible;" name="introduction" placeholder="blog 简介"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="username">点赞数量：</label>
+              <input type="text" class="form-control" name="n_like" placeholder="点赞数量">
+            </div>
+            <div class="form-group">
+              <label for="username">image 地址：</label>
+              <input type="text" class="form-control" name="pic_src" placeholder="图片地址">
+            </div>
+            <div class="form-group">
+              <label for="username">标签：</label>
+              <input type="text" class="form-control" name="tag" placeholder="标签说明">
+            </div>
+            <div class="form-group">
+              <label for="username">链接：</label>
+              <input type="text" class="form-control" name="href" placeholder="blog 链接">
+            </div>
+            <div class="form-group">
+              <input type="submit" value="添加" class="btn btn-warning">
+              <input type="reset" value="重置" class="btn btn-danger">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--模态框（alert修改框） -->
+  <div role="dialog" class="modal fade" id="layer2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <h4 class="modal-title text-info">请修改当前信息</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" action="?" method="post">
+            <input id="mod_id" type="hidden" name="mod_id" />
+            <div class="form-group">
+              <label for="username">标题：</label>
+              <input type="text" id="mod_title" class="form-control" name="title">
+            </div>
+            <div class="form-group">
+              <label for="password">博客介绍：</label>
+              <textarea type="text" id="mod_intro" class="form-control" style="height:8em;overflow-x:visible;" name="introduction"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="username">点赞数量：</label>
+              <input type="text" id="mod_n_like" class="form-control" name="n_like">
+            </div>
+            <div class="form-group">
+              <label for="username">image 地址：</label>
+              <input type="text" id="mod_pic_src" class="form-control" name="pic_src">
+            </div>
+            <div class="form-group">
+              <label for="username">标签：</label>
+              <input type="text" id="mod_tag" class="form-control" name="tag">
+            </div>
+            <div class="form-group">
+              <label for="username">链接：</label>
+              <input type="text" id="mod_href" class="form-control" name="href">
+            </div>
+            <div class="form-group">
+              <input type="submit" value="修改" class="btn btn-warning">
+              <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

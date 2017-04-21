@@ -15,8 +15,8 @@ module.exports = function () {
     router.use('/login', require('./login.js')());
     router.use('/intro', require('./introduce.js')());
     router.use('/experience', require('./experience.js')());
-
-
+    router.use('/skill', require('./skill.js')());
+    router.use('/blog', require('./blog.js')());
     router.get('/', (req, res)=>{
 
         res.render('page/index.ejs');
@@ -29,19 +29,6 @@ module.exports = function () {
 
         res.render('page/home.ejs');
     });
-    router.get('/intro', (req, res)=>{
-
-        res.render('page/introduce.ejs');
-    });
-    router.get('/skill', (req, res)=>{
-
-        res.render('page/skill.ejs');
-    });
-    router.get('/blog', (req, res)=>{
-
-        res.render('page/blog.ejs');
-    });
-
     return router;
 
 }
