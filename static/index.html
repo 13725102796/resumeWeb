@@ -162,7 +162,7 @@
 				<div class="col-md-6 wthree_about_right_grid" v-for="value in skillData">
 					<div class="col-xs-4 wthree_about_right_grid_left">
 						<div class="hvr-rectangle-in">
-							<i class="glyphicon" :class="value.ic_src"></i>
+							<i class="glyphicon" :class="'glyphicon-' + value.ic_src"></i>
 						</div>
 					</div>
 					<div class="col-xs-8 wthree_about_right_grid_right">
@@ -338,8 +338,8 @@
 					})
 				},
 				getAboutRoute: function () {
-					var that = this;
-					that.$http({
+
+					this.$http({
 						method: 'GET',
 						url: '/about'
 					}).then(function(response){

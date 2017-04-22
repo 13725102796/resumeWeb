@@ -34,7 +34,7 @@
       <td><%= i+1 %></td>
       <td><%= experienceData[i].title %></td>
       <td><%= experienceData[i].content %></td>
-      <td><%= experienceData[i].pic_src %></td>
+      <td><img width="40px" height="40px" src="/upload/<%= experienceData[i].pic_src %>" /></td>
       <td><%= experienceData[i].n_like %></td>
       <td><%= experienceData[i].tag %></td>
       <td><%= experienceData[i].href %></td>
@@ -50,7 +50,7 @@
           var mod = $(this).parent().prev();
           var modTitle = mod.prev().prev().prev().prev().prev().text();
           var modContent = mod.prev().prev().prev().prev().text();
-          var modPic_src = mod.prev().prev().prev().text();
+          var modPic_src = mod.prev().prev().prev().find("img").attr('src');
           var modN_like = mod.prev().prev().text();
           var modTag = mod.prev().text();
           var modHref = mod.text();
@@ -121,7 +121,7 @@
           <h4 class="modal-title text-info">请添加填写信息</h4>
         </div>
         <div class="modal-body">
-          <form role="form" action="?" method="post">
+          <form role="form" action="?" method="post" enctype="multipart/form-data">
             <div class="form-group">
               <label for="username">标题：</label>
               <input type="text" class="form-control" name="title" placeholder="Title">
@@ -136,7 +136,7 @@
             </div>
             <div class="form-group">
               <label for="username">image 地址：</label>
-              <input type="text" class="form-control" name="pic_src" placeholder="图片地址">
+              <input type="file" class="form-control" name="pic_src" placeholder="图片地址">
             </div>
             <div class="form-group">
               <label for="username">标签：</label>
@@ -166,7 +166,7 @@
           <h4 class="modal-title text-info">请修改当前信息</h4>
         </div>
         <div class="modal-body">
-          <form role="form" action="?" method="post">
+          <form role="form" action="?" method="post" enctype="multipart/form-data">
             <input id="mod_id" type="hidden" name="mod_id" />
             <div class="form-group">
               <label for="username">标题：</label>
@@ -182,7 +182,7 @@
             </div>
             <div class="form-group">
               <label for="username">image 地址：</label>
-              <input type="text" id="mod_pic_src" class="form-control" name="pic_src">
+              <input type="file" class="form-control" name="pic_src">
             </div>
             <div class="form-group">
               <label for="username">标签：</label>
